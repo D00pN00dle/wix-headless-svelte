@@ -1,19 +1,23 @@
 import { createClient, OAuthStrategy } from '@wix/sdk';
+import { items } from '@wix/data'; // Wix Data SDK module
+import { WIX_CLIENT_ID } from '$env/static/private';
+import { getVisitorToken } from '$lib/server/wix-auth';
 
-/**
- * Server-only Wix client.
- * This is a starter shell; we'll plug in specific Wix modules + token flow next.
- */
-export function getWixClient() {
+export async function getWixClient() {
+  const accessToken = await getVisitorToken();
+
   return createClient({
+    modules: { items },
     auth: OAuthStrategy({
-      clientId: process.env.WIX_CLIENT_ID,
+      clientId: WIX_CLIENT_ID,
       tokens: {
-        // Placeholder token object so the client can be constructed.
-        // Replace with real OAuth/app tokens in the next step.
         accessToken: {
+          value: accessToken,
+          expiresAt: Date.now() + 1000 * 60 * 30
+        },
+        refreshToken: {
           value: '',
-          expiresAt: 0
+          role: 'visitor',
         }
       }
     })

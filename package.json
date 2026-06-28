@@ -21,6 +21,7 @@
 		"vite": "^8.0.16"
 	},
 	"dependencies": {
+		"@wix/data": "^1.0.480",
 		"@wix/sdk": "^1.21.12"
 	}
 }
